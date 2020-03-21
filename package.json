@@ -1,0 +1,11 @@
+{
+  "name": "pr_websockets",
+  "version": "1.0.0",
+  "description": "Proyecto websockets - M06UF3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
