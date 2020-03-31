@@ -1,0 +1,15 @@
+doctype html
+html
+    head
+        title= "Tablero"
+        script(src='/tablero.js')
+        script(src='/socket.io/socket.io.js')
+        script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js')
+
+    body
+        #tablero
+        .inputs
+            input#height(type='number' style='width:350px;')
+            input#width(type='number' style='width:350px;')
+            br
+            input#boto(type='button' value='Size')
