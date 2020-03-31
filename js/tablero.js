@@ -9,6 +9,7 @@ window.onload = function () {
         var width = document.getElementById("width").value;
         socket.emit('sendSize', { h: height, w: width });
     };
+ 
     socket.on('crearTabla', function(data) {
        
     
@@ -29,6 +30,7 @@ window.onload = function () {
                  // node the contents of the <td>, and put the <td> at
                  // the end of the table row
                  var cell = document.createElement("td");
+                 cell.setAttribute("id", "c"+i+j);
                  var cellText = document.createTextNode("cell in row " + i + ", column " + j);
                  cell.appendChild(cellText);
                  row.appendChild(cell);
@@ -44,6 +46,14 @@ window.onload = function () {
          tablero.appendChild(tbl);
          // sets the border attribute of tbl to 2;
          tbl.setAttribute("border", "2");
+         $('td').click(function () {
+            var id = $(this).attr('id');
+            socket.emit('clicked', { id: id, player: localStorage.getItem('name')});
         });
+        });
+    socket.on('color',function(data) {
+        var cell= document.getElementById(data.id);
+        cell.style.backgroundColor = data.color;
 
+    });
 };

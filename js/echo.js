@@ -22,6 +22,8 @@ window.onload = function () {
     botoLogin.onclick = function () {
         var name = user.value;
         var password = pass.value;
+        localStorage.setItem('name', user.value);
+
         socket.emit('login', { us: name, p: password });
     };
     botoRegister.onclick = function () {
