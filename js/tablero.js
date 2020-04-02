@@ -13,7 +13,7 @@ window.onload = function () {
     socket.on('crearTabla', function(data) {
        
     
-         // get the reference for the body
+        tablero.innerHTML=" ";
          
 
          // creates a <table> element and a <tbody> element
@@ -30,7 +30,7 @@ window.onload = function () {
                  // node the contents of the <td>, and put the <td> at
                  // the end of the table row
                  var cell = document.createElement("td");
-                 cell.setAttribute("id", "c"+i+j);
+                 cell.setAttribute("id", ""+i+j);
                  var cellText = document.createTextNode("cell in row " + i + ", column " + j);
                  cell.appendChild(cellText);
                  row.appendChild(cell);
@@ -56,4 +56,32 @@ window.onload = function () {
         cell.style.backgroundColor = data.color;
 
     });
+    socket.on('puntuacion',function(data) {
+        var p= document.getElementById("puntuacion");
+        var text="";
+        console.log(data.p);
+        console.log(data.n[1]);
+        for(var i=0;i<data.n.length;i++){
+            text=text+"Puntuacion de "+data.n[i]+" es: "+data.p[i]+"<br>";
+        }
+        p.innerHTML = text;
+        
+
+    });
+    socket.on('timer',function(distance) {
+        var x = setInterval(function() {
+            distance = distance-1000;
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          
+            document.getElementById("timer").innerHTML = seconds + "s ";
+          
+            if (distance < 0) {
+              clearInterval(x);
+              document.getElementById("timer").innerHTML = "Time's Up";
+            }
+          }, 1000);
+
+    });
+    
+    
 };
