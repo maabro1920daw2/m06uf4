@@ -1,13 +1,22 @@
 window.onload = function () {
     var socket = io.connect('http://localhost:8888');
     var tablero = document.getElementById("tablero");
-    var pass = document.getElementById("password");
+    var mongo = document.getElementById("mongo");
     var boto = document.getElementById("boto");
+    var logout  = document.getElementById("logout");
 
+    mongo.onclick = function () {
+        
+        socket.emit('guardarMongo', "hola");
+    };
     boto.onclick = function () {
         var height = document.getElementById("height").value;
         var width = document.getElementById("width").value;
         socket.emit('sendSize', { h: height, w: width });
+    };
+    logout.onclick = function () {
+
+        window.location.href = '/..';
     };
  
     socket.on('crearTabla', function(data) {
@@ -56,6 +65,11 @@ window.onload = function () {
         cell.style.backgroundColor = data.color;
 
     });
+    var completado=false;
+    socket.on('completado',function(data) {
+        completado=true;
+
+    });
     socket.on('puntuacion',function(data) {
         var p= document.getElementById("puntuacion");
         var text="";
@@ -70,6 +84,7 @@ window.onload = function () {
     });
     socket.on('timer',function(distance) {
         var x = setInterval(function() {
+            if(completado) distance=0;
             distance = distance-1000;
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
           
