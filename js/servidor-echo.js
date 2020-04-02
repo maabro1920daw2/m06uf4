@@ -5,7 +5,6 @@ var assert = require('assert');
 var MongoClient = require('mongodb').MongoClient;
 var colors = ["#EAC910", "#EA1710", "#104FEA", "#10EA17", "#10EAE0", "#E010EA"];
 class Partida {
-
     constructor(codi, height, width) {
         this.codi = codi;
         this.height = height;
@@ -20,28 +19,22 @@ class Partida {
                     return true;
                 }
             }
-
         }
         return false;
     }
     startTimer() {
         var b = true;
-
         for (var i = 0; i < tab.length; i++) {
             if (tab[i].color != "nada") {
                 b = false;
                 break;
             }
-
         }
         if (b) {
-
             var x = setInterval(function () {
                 distance = distance - 1000;
                 var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
                 console.log(seconds + "s ");
-
                 if (distance < 0) {
                     clearInterval(x);
                     console.log("Time's Up");
@@ -52,7 +45,6 @@ class Partida {
     }
     checkTime() {
         if (distance < 0) {
-
             return false;
         }
         return true;
@@ -65,7 +57,6 @@ class Partida {
                     b = false;
                     break;
                 }
-
             }
             if (b) {
                 if (!tiempo) {
@@ -83,13 +74,11 @@ class Partida {
         this.startTimer();
         this.complete();
         if (this.checkTime()) {
-
             for (var i = 0; i < tab.length; i++) {
                 if (tab[i].color == j.color) {
                     b = false;
                     break;
                 }
-
             }
             if (b) {
                 for (var i = 0; i < tab.length; i++) {
@@ -99,7 +88,6 @@ class Partida {
                             return true;
                         }
                     }
-
                 }
             }
             for (var i = 0; i < tab.length; i++) {
@@ -113,8 +101,6 @@ class Partida {
                         }
                     }
                 }
-
-
             }
         }
         return false;
@@ -122,7 +108,6 @@ class Partida {
     generarTablero() {
         tab = [];
         for (var i = 0; i < this.height; i++) {
-
             for (var j = 0; j < this.width; j++) {
                 tab.push({ id: "" + i + j, color: "nada" });
             }
@@ -134,14 +119,12 @@ class Partida {
         MongoClient.connect(ruta, function (err, db) {
             assert.equal(null, err);
             console.log("Connexió correcta");
-
             afegirDocuments(db, err, function () { });
             db.close();
         });
         var tiempototal = (20000 - tiempo) / 1000;
         var afegirDocuments = function (db, err, callback) {
             for (var i = 0; i < js.length; i++) {
-
                 db.collection('puntuacions').insertOne({
                     jugador: js[i].codi,
                     color: js[i].color,
@@ -149,9 +132,8 @@ class Partida {
                     codiP: p.codi,
                     tiempo: tiempototal + "s"
                 });
-
                 assert.equal(err, null);
-                console.log("Afegit document a col·lecció usuaris");
+                console.log("Añadidas puntuaciones");
                 callback();
             }
         };
@@ -171,81 +153,53 @@ class Jugador {
                 puntuacion++;
             }
         }
-
         this.puntuacion = puntuacion;
-    }
-    guardarMongo(codiP) {
-
-
     }
 }
 function loginCorrecto(user, pass) {
     var ruta = 'mongodb://127.0.0.1:27017/usuarios';
-
     MongoClient.connect(ruta, function (err, db) {
         assert.equal(null, err);
         console.log("Connexió correcta");
-
         comprobarLogin(db, err, function () { });
-
         db.close();
-
     });
     var comprobarLogin = function (db, err, callback) {
-
-
-
         db.collection('usuarios').find({ nombre: user, pass: pass }).toArray(function (err, result) {
             if (err) throw err;
             if (result.length > 0) {
                 var j = new Jugador(user, colors[jus], 0, pass);
                 js.push(j);
                 jus++;
-
                 io.sockets.emit('redirect', '/tablero');
             }
-
             db.close();
         });
-
         assert.equal(err, null);
-  
-
         callback();
     }
-
 };
-
 function registrarCorrecto(user, pass) {
     var ruta = 'mongodb://127.0.0.1:27017/usuarios';
     MongoClient.connect(ruta, function (err, db) {
         assert.equal(null, err);
         console.log("Connexió correcta");
-
         comprobarRegister(db, err, function () { });
         db.close();
     });
     var comprobarRegister = function (db, err, callback) {
-
         db.collection('usuarios').find({ nombre: user }).toArray(function (err, result) {
             if (err) throw err;
             if (result.length > 0) {
-
                 io.sockets.emit('existe', '/tablero');
-
             }
             else {
                 insertarUsuario(user, pass);
             }
             db.close();
         });
-
-
-
         assert.equal(err, null);
-
         callback();
-
     };
 }
 function insertarUsuario(user, pass) {
@@ -253,52 +207,37 @@ function insertarUsuario(user, pass) {
     MongoClient.connect(ruta, function (err, db) {
         assert.equal(null, err);
         console.log("Connexió correcta");
-
         usermongo(db, err, function () { });
         db.close();
     });
     var usermongo = function (db, err, callback) {
-
-
         db.collection('usuarios').insertOne({
             nombre: user,
             pass: pass
         });
-
         assert.equal(err, null);
-        console.log("Afegit document a col·lecció usuaris");
+        console.log("Añadido usuario a la base de datos");
         callback();
-
     };
 }
-
 function returnPunt() {
     var ruta = 'mongodb://127.0.0.1:27017/puntuacions';
     MongoClient.connect(ruta, function (err, db) {
         assert.equal(null, err);
         console.log("Connexió correcta");
-
         returner(db, err, function () { });
         db.close();
     });
     var returner = function (db, err, callback) {
-
         db.collection('puntuacions').find().sort({ puntuacion: -1 }).toArray(function (err, result) {
             if (err) throw err;
             io.sockets.emit('puntu', result);
-
             db.close();
         });
-
-
-
         assert.equal(err, null);
-
         callback();
-
     };
 }
-
 var p;
 var js = [];
 var jus = 0;
@@ -316,10 +255,8 @@ app.get("/", function (req, res) {
 app.get("/tablero", function (req, res) {
     res.render("tablero");
 });
-
 var io = require('socket.io').listen(app.listen(port));
 console.log("Listening on port " + port);
-
 io.sockets.on('connection', function (socket) {
     socket.emit('missatge', { missatge: 'Benvingut' });
     socket.on('login', function (data) {
@@ -332,6 +269,9 @@ io.sockets.on('connection', function (socket) {
         returnPunt();
     });
     socket.on('sendSize', function (data) {
+        distance = 20000;
+        lb = false;
+        tiempo = false;
         p = new Partida(1, data.h, data.w);
         p.jugadors = js;
         p.generarTablero();
@@ -353,5 +293,4 @@ io.sockets.on('connection', function (socket) {
             io.sockets.emit('color', { id: data.id, color: j.color });
         }
     });
-
 });

@@ -1,20 +1,27 @@
 doctype html
 html
     head
-        title= "Tablero"
+        title= "Tablero | El más rápido"
+        style
+            include ../css/style.css
         script(src='/tablero.js')
         script(src='/socket.io/socket.io.js')
         script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js')
 
     body
+        h1 El más rápido
+        .textos
+            p#puntuacion
+            p#timer
         #tablero
         .inputs
-            input#height(type='number' style='width:350px;')
-            input#width(type='number' style='width:350px;')
+            input#height(type='number' min="0" max="10")
+            br
+            input#width(type='number' min="0" max="10")
             br
             input#boto(type='button' value='Size')
-        p#puntuacion(color='black' style='width:350px;')
-        p#timer(color='black' style='width:350px;')
-        input#mongo(type='button' value='Guardar')
-        input#logout(type='button' value='Logout')
+
+        .botones
+            input#mongo(type='button' value='Guardar')
+            input#logout(type='button' value='Logout')
            

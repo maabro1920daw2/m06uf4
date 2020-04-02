@@ -1,14 +1,19 @@
 doctype html
 html
     head
-        title= "Login"
+        title= "Login | El más rápido"
+        style
+            include ../css/style.css
+        link(href='/style.css', rel='stylesheet')
         script(src='/echo.js')
         script(src='/socket.io/socket.io.js')
     body
+        h1 El más rápido
         .controls
-            input#usuario(style='width:350px;')
-            input#password(type='password' style='width:350px;')
+            input#usuario(type='text' placeholder="Usuario")
+            input#password(type='password' placeholder="Contraseña")
             br
-            input#login(type='button' value='login')
-            input#register(type='button' value='register')
+            input#login(type='button' value='Inicio')
+            input#register(type='button' value='Registro')
+        h2 Mejores jugadores
         #puntuaciones
