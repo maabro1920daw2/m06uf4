@@ -171,6 +171,7 @@ function loginCorrecto(user, pass) {
                 var j = new Jugador(user, colors[jus], 0, pass);
                 js.push(j);
                 jus++;
+                if (jus>5) jus=0;
                 io.sockets.emit('redirect', '/tablero');
             }
             db.close();
@@ -278,6 +279,14 @@ io.sockets.on('connection', function (socket) {
     });
     socket.on('guardarMongo', function (data) {
         p.guardarJugadoresMongo();
+    });
+    socket.on('logout', function (data) {
+        p.guardarJugadoresMongo();
+
+
+        var filteredAry = js.filter(e => e.codi != data);
+        js=filteredAry;
+
     });
     socket.on('clicked', function (data) {
         var j = js.find(obj => { return obj.codi === data.player });

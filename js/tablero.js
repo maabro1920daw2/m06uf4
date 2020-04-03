@@ -13,6 +13,7 @@ window.onload = function () {
         socket.emit('sendSize', { h: height, w: width });
     };
     logout.onclick = function () {
+        socket.emit('logout', localStorage.getItem('name'));
         window.location.href = '/..';
     };
     socket.on('crearTabla', function (data) {
