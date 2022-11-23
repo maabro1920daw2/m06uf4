@@ -15,7 +15,7 @@
     "mongo": "^0.1.0",
     "mongodb": "^2.2.33",
     "pug": "^2.0.4",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.5.0",
     "utf-8-validate": "^5.0.2"
   }
 }
